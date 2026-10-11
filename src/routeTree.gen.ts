@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as ConfiguracionRouteImport } from './routes/configuracion'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as TareasRouteImport } from './routes/tareas'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,6 +32,11 @@ const ConfiguracionRoute = ConfiguracionRouteImport.update({
   path: '/configuracion',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OportunidadesRoute = OportunidadesRouteImport.update({
   id: '/oportunidades',
   path: '/oportunidades',
@@ -40,49 +47,79 @@ const TareasRoute = TareasRouteImport.update({
   path: '/tareas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
   '/configuracion': typeof ConfiguracionRoute
+  '/mcp': typeof McpRoute
   '/oportunidades': typeof OportunidadesRoute
   '/tareas': typeof TareasRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
   '/configuracion': typeof ConfiguracionRoute
+  '/mcp': typeof McpRoute
   '/oportunidades': typeof OportunidadesRoute
   '/tareas': typeof TareasRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/clientes': typeof ClientesRoute
   '/configuracion': typeof ConfiguracionRoute
+  '/mcp': typeof McpRoute
   '/oportunidades': typeof OportunidadesRoute
   '/tareas': typeof TareasRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/clientes' | '/configuracion' | '/oportunidades' | '/tareas'
+  fullPaths:
+    | '/'
+    | '/clientes'
+    | '/configuracion'
+    | '/mcp'
+    | '/oportunidades'
+    | '/tareas'
+    | '/.well-known/oauth-protected-resource'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/clientes' | '/configuracion' | '/oportunidades' | '/tareas'
+  to:
+    | '/'
+    | '/clientes'
+    | '/configuracion'
+    | '/mcp'
+    | '/oportunidades'
+    | '/tareas'
+    | '/.well-known/oauth-protected-resource'
   id:
     | '__root__'
     | '/'
     | '/clientes'
     | '/configuracion'
+    | '/mcp'
     | '/oportunidades'
     | '/tareas'
+    | '/.well-known/oauth-protected-resource'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ClientesRoute: typeof ClientesRoute
   ConfiguracionRoute: typeof ConfiguracionRoute
+  McpRoute: typeof McpRoute
   OportunidadesRoute: typeof OportunidadesRoute
   TareasRoute: typeof TareasRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -108,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfiguracionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/oportunidades': {
       id: '/oportunidades'
       path: '/oportunidades'
@@ -122,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TareasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -129,8 +180,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ClientesRoute: ClientesRoute,
   ConfiguracionRoute: ConfiguracionRoute,
+  McpRoute: McpRoute,
   OportunidadesRoute: OportunidadesRoute,
   TareasRoute: TareasRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
