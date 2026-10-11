@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const Route = createFileRoute("/.lovable/oauth/consent")({
   validateSearch: (search: Record<string, unknown>) => ({
-    authorization_id: typeof search.authorization_id === "string" ? search.authorization_id : undefined,
+    authorization_id: typeof search["authorization_id"] === "string" ? search["authorization_id"] : undefined,
   }),
   head: () => ({
     meta: [
@@ -77,12 +77,13 @@ function ConsentPage() {
         setLoading(false);
         return;
       }
-      const redirect = data?.redirect_url ?? data?.redirect_to;
-      if (redirect && !data?.client) {
+      const details = data as AuthDetails | null;
+      const redirect = details?.redirect_url ?? details?.redirect_to;
+      if (redirect && !details?.client) {
         window.location.href = redirect;
         return;
       }
-      setDetails(data as AuthDetails);
+      setDetails(details);
       setLoading(false);
     })();
     return () => {
@@ -104,7 +105,8 @@ function ConsentPage() {
       setActing(false);
       return;
     }
-    const redirect = data?.redirect_url ?? data?.redirect_to;
+    const result = data as AuthDetails | null;
+    const redirect = result?.redirect_url ?? result?.redirect_to;
     if (redirect) window.location.href = redirect;
   }
 
