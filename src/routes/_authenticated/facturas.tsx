@@ -25,7 +25,7 @@ import { estadoFactura, hoyCR, METODOS_PAGO, saldo, type EstadoFactura } from "@
 
 export const Route = createFileRoute("/_authenticated/facturas")({
   validateSearch: (s: Record<string, unknown>): { cliente?: string } =>
-    typeof s.cliente === "string" && s.cliente ? { cliente: s.cliente } : {},
+    typeof s["cliente"] === "string" && s["cliente"] ? { cliente: s["cliente"] } : {},
   head: () => ({
     meta: [
       { title: "Facturas — Rutica CRM" },
@@ -50,7 +50,8 @@ const fechaISO = (d: string) => formatFecha(`${d}T12:00:00-06:00`);
 const metodoLabel = (m: string) => METODOS_PAGO.find((x) => x.value === m)?.label ?? m;
 
 type Pago = { id: string; monto: number; fecha: string; metodo: string; nota: string | null; registrado_por_nombre: string | null; created_at: string };
-type Cli = { id: string; codigo: string; name: string; client_billing: Record<string, string | null> | Record<string, string | null>[] | null } | null;
+type Billing = { nombre_completo: string | null; razon_social: string | null; empresa: string | null; cedula: string | null; telefono: string | null; email: string | null };
+type Cli = { id: string; codigo: string; name: string; client_billing: Billing | Billing[] | null } | null;
 
 async function load() {
   const [inv, company] = await Promise.all([
