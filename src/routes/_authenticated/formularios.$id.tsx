@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Calculator, ChevronDown, Copy, ExternalLink, GripVertical, Plus, Trash2 } from "lucide-react";
@@ -126,13 +126,13 @@ function Editor({ initial }: { initial: Awaited<ReturnType<typeof load>> }) {
 
   async function save() {
     const vars = fields.map((f) => f.variable.trim());
-    if (vars.some((v) => !/^[a-z0-9_]+$/.test(v))) return toast.error("Las variables solo pueden tener minúsculas, números y _");
-    if (new Set(vars).size !== vars.length) return toast.error("Cada variable debe ser única dentro del formulario");
-    if (fields.some((f) => !f.etiqueta.trim())) return toast.error("Todos los campos necesitan etiqueta");
+    if (vars.some((v) => !/^[a-z0-9_]+$/.test(v))) { toast.error("Las variables solo pueden tener minúsculas, números y _"); return; }
+    if (new Set(vars).size !== vars.length) { toast.error("Cada variable debe ser única dentro del formulario"); return; }
+    if (fields.some((f) => !f.etiqueta.trim())) { toast.error("Todos los campos necesitan etiqueta"); return; }
     const slug = slugify(cfg.slug);
-    if (!slug) return toast.error("El link necesita un nombre válido");
-    if (!cfg.titulo.trim()) return toast.error("El título es obligatorio");
-    if (cfg.email_notificacion && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cfg.email_notificacion)) return toast.error("Correo de aviso inválido");
+    if (!slug) { toast.error("El link necesita un nombre válido"); return; }
+    if (!cfg.titulo.trim()) { toast.error("El título es obligatorio"); return; }
+    if (cfg.email_notificacion && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cfg.email_notificacion)) { toast.error("Correo de aviso inválido"); return; }
     setSaving(true);
     try {
       const { error: fe } = await supabase
@@ -529,8 +529,8 @@ function Respuestas({ subs, fields, hasCalc }: { subs: Sub[]; fields: FieldDef[]
             const d = (s.data ?? {}) as Record<string, unknown>;
             const c = s.clients as { id: string; name: string; codigo: string } | null;
             return (
-              <>
-                <TableRow key={s.id} className="cursor-pointer" onClick={() => setOpen(open === s.id ? null : s.id)}>
+              <Fragment key={s.id}>
+                <TableRow className="cursor-pointer" onClick={() => setOpen(open === s.id ? null : s.id)}>
                   <TableCell>{formatFecha(s.created_at)}</TableCell>
                   {first.map((f) => <TableCell key={f.variable} className="max-w-48 truncate">{displayValue(f, d[f.variable]) || "—"}</TableCell>)}
                   <TableCell>{c ? `${c.codigo} · ${c.name}` : "—"}</TableCell>
@@ -548,7 +548,7 @@ function Respuestas({ subs, fields, hasCalc }: { subs: Sub[]; fields: FieldDef[]
                   </TableCell>
                 </TableRow>
                 {open === s.id && (
-                  <TableRow key={`${s.id}-d`}>
+                  <TableRow>
                     <TableCell colSpan={first.length + 4} className="bg-muted/40">
                       <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
                         {Object.keys(d).map((k) => {
@@ -564,7 +564,7 @@ function Respuestas({ subs, fields, hasCalc }: { subs: Sub[]; fields: FieldDef[]
                     </TableCell>
                   </TableRow>
                 )}
-              </>
+              </Fragment>
             );
           })}
         </TableBody>

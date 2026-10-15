@@ -24,6 +24,7 @@ import { Route as AuthenticatedPaquetesRouteImport } from './routes/_authenticat
 import { Route as FSlugRouteImport } from './routes/f.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedFormulariosIndexRouteImport } from './routes/_authenticated/formularios.index'
+import { Route as AuthenticatedFormulariosIdRouteImport } from './routes/_authenticated/formularios.$id'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -105,6 +106,12 @@ const AuthenticatedFormulariosIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedFormulariosRoute,
   } as any)
+const AuthenticatedFormulariosIdRoute =
+  AuthenticatedFormulariosIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedFormulariosRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/paquetes': typeof AuthenticatedPaquetesRoute
   '/f/$slug': typeof FSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/formularios/$id': typeof AuthenticatedFormulariosIdRoute
   '/formularios/': typeof AuthenticatedFormulariosIndexRoute
 }
 export interface FileRoutesByTo {
@@ -135,6 +143,7 @@ export interface FileRoutesByTo {
   '/f/$slug': typeof FSlugRoute
   '/': typeof AuthenticatedIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/formularios/$id': typeof AuthenticatedFormulariosIdRoute
   '/formularios': typeof AuthenticatedFormulariosIndexRoute
 }
 export interface FileRoutesById {
@@ -153,6 +162,7 @@ export interface FileRoutesById {
   '/f/$slug': typeof FSlugRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/_authenticated/formularios/$id': typeof AuthenticatedFormulariosIdRoute
   '/_authenticated/formularios/': typeof AuthenticatedFormulariosIndexRoute
 }
 export interface FileRouteTypes {
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/paquetes'
     | '/f/$slug'
     | '/.lovable/oauth/consent'
+    | '/formularios/$id'
     | '/formularios/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/f/$slug'
     | '/'
     | '/.lovable/oauth/consent'
+    | '/formularios/$id'
     | '/formularios'
   id:
     | '__root__'
@@ -203,6 +215,7 @@ export interface FileRouteTypes {
     | '/f/$slug'
     | '/_authenticated/'
     | '/.lovable/oauth/consent'
+    | '/_authenticated/formularios/$id'
     | '/_authenticated/formularios/'
   fileRoutesById: FileRoutesById
 }
@@ -322,15 +335,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFormulariosIndexRouteImport
       parentRoute: typeof AuthenticatedFormulariosRoute
     }
+    '/_authenticated/formularios/$id': {
+      id: '/_authenticated/formularios/$id'
+      path: '/$id'
+      fullPath: '/formularios/$id'
+      preLoaderRoute: typeof AuthenticatedFormulariosIdRouteImport
+      parentRoute: typeof AuthenticatedFormulariosRoute
+    }
   }
 }
 
 interface AuthenticatedFormulariosRouteChildren {
+  AuthenticatedFormulariosIdRoute: typeof AuthenticatedFormulariosIdRoute
   AuthenticatedFormulariosIndexRoute: typeof AuthenticatedFormulariosIndexRoute
 }
 
 const AuthenticatedFormulariosRouteChildren: AuthenticatedFormulariosRouteChildren =
   {
+    AuthenticatedFormulariosIdRoute: AuthenticatedFormulariosIdRoute,
     AuthenticatedFormulariosIndexRoute: AuthenticatedFormulariosIndexRoute,
   }
 
