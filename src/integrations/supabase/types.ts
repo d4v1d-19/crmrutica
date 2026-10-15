@@ -133,6 +133,42 @@ export type Database = {
         }
         Relationships: []
       }
+      company_settings: {
+        Row: {
+          actividad_economica: string | null
+          cedula_juridica: string | null
+          correo: string | null
+          direccion: string | null
+          id: number
+          logo_url: string | null
+          nombre: string
+          telefono: string | null
+          updated_at: string
+        }
+        Insert: {
+          actividad_economica?: string | null
+          cedula_juridica?: string | null
+          correo?: string | null
+          direccion?: string | null
+          id?: number
+          logo_url?: string | null
+          nombre?: string
+          telefono?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actividad_economica?: string | null
+          cedula_juridica?: string | null
+          correo?: string | null
+          direccion?: string | null
+          id?: number
+          logo_url?: string | null
+          nombre?: string
+          telefono?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       form_fields: {
         Row: {
           etiqueta: string
@@ -317,6 +353,13 @@ export type Database = {
             columns: ["quote_id"]
             isOneToOne: false
             referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes_view"
             referencedColumns: ["id"]
           },
         ]
@@ -606,7 +649,31 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      quotes_view: {
+        Row: {
+          agente_id: string | null
+          client_id: string | null
+          created_at: string | null
+          estado: string | null
+          estado_efectivo: string | null
+          fecha_envio: string | null
+          fecha_vencimiento: string | null
+          id: string | null
+          moneda: string | null
+          numero: number | null
+          snapshot: Json | null
+          total: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       has_role: {
