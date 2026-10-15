@@ -138,7 +138,7 @@ function ConsentPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Conectar {clientName} a Customer Connection Hub</CardTitle>
+          <CardTitle>Conectar {clientName} a Rutica CRM</CardTitle>
           <CardDescription>
             {clientName} podrá usar las herramientas habilitadas de esta app como si fueras tú
             {userEmail ? ` (${userEmail})` : ""}.

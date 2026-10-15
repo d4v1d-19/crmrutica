@@ -63,7 +63,7 @@ function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>{mode === "signin" ? "Iniciar sesión" : "Crear cuenta"}</CardTitle>
-          <CardDescription>Accede a Customer Connection Hub para continuar.</CardDescription>
+          <CardDescription>Accede a Rutica CRM para continuar.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
