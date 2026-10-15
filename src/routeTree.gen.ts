@@ -21,7 +21,10 @@ import { Route as AuthenticatedCotizacionesRouteImport } from './routes/_authent
 import { Route as AuthenticatedFacturasRouteImport } from './routes/_authenticated/facturas'
 import { Route as AuthenticatedFormulariosRouteImport } from './routes/_authenticated/formularios'
 import { Route as AuthenticatedPaquetesRouteImport } from './routes/_authenticated/paquetes'
+import { Route as FSlugRouteImport } from './routes/f.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as AuthenticatedFormulariosIndexRouteImport } from './routes/_authenticated/formularios.index'
+import { Route as AuthenticatedFormulariosIdRouteImport } from './routes/_authenticated/formularios.$id'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -87,11 +90,28 @@ const AuthenticatedPaquetesRoute = AuthenticatedPaquetesRouteImport.update({
   path: '/paquetes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const FSlugRoute = FSlugRouteImport.update({
+  id: '/f/$slug',
+  path: '/f/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFormulariosIndexRoute =
+  AuthenticatedFormulariosIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedFormulariosRoute,
+  } as any)
+const AuthenticatedFormulariosIdRoute =
+  AuthenticatedFormulariosIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedFormulariosRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -103,9 +123,12 @@ export interface FileRoutesByFullPath {
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/cotizaciones': typeof AuthenticatedCotizacionesRoute
   '/facturas': typeof AuthenticatedFacturasRoute
-  '/formularios': typeof AuthenticatedFormulariosRoute
+  '/formularios': typeof AuthenticatedFormulariosRouteWithChildren
   '/paquetes': typeof AuthenticatedPaquetesRoute
+  '/f/$slug': typeof FSlugRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/formularios/$id': typeof AuthenticatedFormulariosIdRoute
+  '/formularios/': typeof AuthenticatedFormulariosIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -116,10 +139,12 @@ export interface FileRoutesByTo {
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/cotizaciones': typeof AuthenticatedCotizacionesRoute
   '/facturas': typeof AuthenticatedFacturasRoute
-  '/formularios': typeof AuthenticatedFormulariosRoute
   '/paquetes': typeof AuthenticatedPaquetesRoute
+  '/f/$slug': typeof FSlugRoute
   '/': typeof AuthenticatedIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/formularios/$id': typeof AuthenticatedFormulariosIdRoute
+  '/formularios': typeof AuthenticatedFormulariosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -132,10 +157,13 @@ export interface FileRoutesById {
   '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
   '/_authenticated/cotizaciones': typeof AuthenticatedCotizacionesRoute
   '/_authenticated/facturas': typeof AuthenticatedFacturasRoute
-  '/_authenticated/formularios': typeof AuthenticatedFormulariosRoute
+  '/_authenticated/formularios': typeof AuthenticatedFormulariosRouteWithChildren
   '/_authenticated/paquetes': typeof AuthenticatedPaquetesRoute
+  '/f/$slug': typeof FSlugRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/_authenticated/formularios/$id': typeof AuthenticatedFormulariosIdRoute
+  '/_authenticated/formularios/': typeof AuthenticatedFormulariosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,7 +179,10 @@ export interface FileRouteTypes {
     | '/facturas'
     | '/formularios'
     | '/paquetes'
+    | '/f/$slug'
     | '/.lovable/oauth/consent'
+    | '/formularios/$id'
+    | '/formularios/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -162,10 +193,12 @@ export interface FileRouteTypes {
     | '/configuracion'
     | '/cotizaciones'
     | '/facturas'
-    | '/formularios'
     | '/paquetes'
+    | '/f/$slug'
     | '/'
     | '/.lovable/oauth/consent'
+    | '/formularios/$id'
+    | '/formularios'
   id:
     | '__root__'
     | '/_authenticated'
@@ -179,8 +212,11 @@ export interface FileRouteTypes {
     | '/_authenticated/facturas'
     | '/_authenticated/formularios'
     | '/_authenticated/paquetes'
+    | '/f/$slug'
     | '/_authenticated/'
     | '/.lovable/oauth/consent'
+    | '/_authenticated/formularios/$id'
+    | '/_authenticated/formularios/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -188,6 +224,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   McpRoute: typeof McpRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  FSlugRoute: typeof FSlugRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -277,6 +314,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPaquetesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/f/$slug': {
+      id: '/f/$slug'
+      path: '/f/$slug'
+      fullPath: '/f/$slug'
+      preLoaderRoute: typeof FSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -284,8 +328,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/formularios/': {
+      id: '/_authenticated/formularios/'
+      path: '/'
+      fullPath: '/formularios/'
+      preLoaderRoute: typeof AuthenticatedFormulariosIndexRouteImport
+      parentRoute: typeof AuthenticatedFormulariosRoute
+    }
+    '/_authenticated/formularios/$id': {
+      id: '/_authenticated/formularios/$id'
+      path: '/$id'
+      fullPath: '/formularios/$id'
+      preLoaderRoute: typeof AuthenticatedFormulariosIdRouteImport
+      parentRoute: typeof AuthenticatedFormulariosRoute
+    }
   }
 }
+
+interface AuthenticatedFormulariosRouteChildren {
+  AuthenticatedFormulariosIdRoute: typeof AuthenticatedFormulariosIdRoute
+  AuthenticatedFormulariosIndexRoute: typeof AuthenticatedFormulariosIndexRoute
+}
+
+const AuthenticatedFormulariosRouteChildren: AuthenticatedFormulariosRouteChildren =
+  {
+    AuthenticatedFormulariosIdRoute: AuthenticatedFormulariosIdRoute,
+    AuthenticatedFormulariosIndexRoute: AuthenticatedFormulariosIndexRoute,
+  }
+
+const AuthenticatedFormulariosRouteWithChildren =
+  AuthenticatedFormulariosRoute._addFileChildren(
+    AuthenticatedFormulariosRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedCalculadoraRoute: typeof AuthenticatedCalculadoraRoute
@@ -293,7 +367,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
   AuthenticatedCotizacionesRoute: typeof AuthenticatedCotizacionesRoute
   AuthenticatedFacturasRoute: typeof AuthenticatedFacturasRoute
-  AuthenticatedFormulariosRoute: typeof AuthenticatedFormulariosRoute
+  AuthenticatedFormulariosRoute: typeof AuthenticatedFormulariosRouteWithChildren
   AuthenticatedPaquetesRoute: typeof AuthenticatedPaquetesRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
@@ -304,7 +378,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
   AuthenticatedCotizacionesRoute: AuthenticatedCotizacionesRoute,
   AuthenticatedFacturasRoute: AuthenticatedFacturasRoute,
-  AuthenticatedFormulariosRoute: AuthenticatedFormulariosRoute,
+  AuthenticatedFormulariosRoute: AuthenticatedFormulariosRouteWithChildren,
   AuthenticatedPaquetesRoute: AuthenticatedPaquetesRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
@@ -318,6 +392,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpRoute: McpRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  FSlugRoute: FSlugRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
