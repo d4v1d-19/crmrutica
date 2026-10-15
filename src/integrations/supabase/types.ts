@@ -267,6 +267,60 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          agente_id: string | null
+          client_id: string
+          created_at: string
+          fecha_vencimiento: string | null
+          id: string
+          moneda: string
+          numero: string
+          quote_id: string | null
+          snapshot: Json
+          total: number
+        }
+        Insert: {
+          agente_id?: string | null
+          client_id: string
+          created_at?: string
+          fecha_vencimiento?: string | null
+          id?: string
+          moneda?: string
+          numero?: string
+          quote_id?: string | null
+          snapshot: Json
+          total?: number
+        }
+        Update: {
+          agente_id?: string | null
+          client_id?: string
+          created_at?: string
+          fecha_vencimiento?: string | null
+          id?: string
+          moneda?: string
+          numero?: string
+          quote_id?: string | null
+          snapshot?: Json
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       package_variables: {
         Row: {
           descripcion: string | null
@@ -368,6 +422,75 @@ export type Database = {
         }
         Relationships: []
       }
+      percentages: {
+        Row: {
+          aplica_a: string[]
+          aplicar_por_defecto: boolean
+          created_at: string
+          id: string
+          nombre: string
+          porcion: number
+        }
+        Insert: {
+          aplica_a?: string[]
+          aplicar_por_defecto?: boolean
+          created_at?: string
+          id?: string
+          nombre: string
+          porcion: number
+        }
+        Update: {
+          aplica_a?: string[]
+          aplicar_por_defecto?: boolean
+          created_at?: string
+          id?: string
+          nombre?: string
+          porcion?: number
+        }
+        Relationships: []
+      }
+      price_settings: {
+        Row: {
+          cena: number
+          desayuno: number
+          entrada_extranjero: number
+          entrada_nacional: number
+          hospedaje: number
+          id: number
+          merienda: number
+          moneda: string
+          updated_at: string
+          updated_by: string | null
+          updated_by_nombre: string | null
+        }
+        Insert: {
+          cena?: number
+          desayuno?: number
+          entrada_extranjero?: number
+          entrada_nacional?: number
+          hospedaje?: number
+          id?: number
+          merienda?: number
+          moneda?: string
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_nombre?: string | null
+        }
+        Update: {
+          cena?: number
+          desayuno?: number
+          entrada_extranjero?: number
+          entrada_nacional?: number
+          hospedaje?: number
+          id?: number
+          merienda?: number
+          moneda?: string
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_nombre?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           activo: boolean
@@ -394,6 +517,53 @@ export type Database = {
           nombre?: string | null
         }
         Relationships: []
+      }
+      quotes: {
+        Row: {
+          agente_id: string | null
+          client_id: string
+          created_at: string
+          estado: string
+          fecha_envio: string | null
+          fecha_vencimiento: string | null
+          id: string
+          moneda: string
+          snapshot: Json
+          total: number
+        }
+        Insert: {
+          agente_id?: string | null
+          client_id: string
+          created_at?: string
+          estado?: string
+          fecha_envio?: string | null
+          fecha_vencimiento?: string | null
+          id?: string
+          moneda?: string
+          snapshot: Json
+          total?: number
+        }
+        Update: {
+          agente_id?: string | null
+          client_id?: string
+          created_at?: string
+          estado?: string
+          fecha_envio?: string | null
+          fecha_vencimiento?: string | null
+          id?: string
+          moneda?: string
+          snapshot?: Json
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_permissions: {
         Row: {
