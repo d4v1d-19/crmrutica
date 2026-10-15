@@ -18,23 +18,50 @@
     "tools": [
       {
         "name": "list_clients",
-        "title": "List clients",
-        "description": "List the signed-in user's CRM clients.",
+        "title": "Listar clientes",
+        "description": "Lista clientes de Rutica CRM (máx. 100), con filtros opcionales por estado, medida de interés y canal.",
         "annotations": {
           "readOnlyHint": true
         },
         "inputSchema": {
           "$schema": "https://json-schema.org/draft/2020-12/schema",
           "type": "object",
-          "properties": {},
+          "properties": {
+            "estado": {
+              "type": "string",
+              "enum": [
+                "potencial",
+                "oficial"
+              ]
+            },
+            "medida_interes": {
+              "type": "string",
+              "enum": [
+                "frio",
+                "tibio",
+                "caliente"
+              ]
+            },
+            "canal": {
+              "type": "string",
+              "enum": [
+                "WhatsApp",
+                "Correo electrónico",
+                "Redes sociales",
+                "Llamada telefónica",
+                "Formulario",
+                "Otro"
+              ]
+            }
+          },
           "additionalProperties": false
         },
         "outputSchema": null
       },
       {
         "name": "create_client",
-        "title": "Create client",
-        "description": "Create a new CRM client for the signed-in user.",
+        "title": "Crear cliente",
+        "description": "Crea un cliente en Rutica CRM. El canal es obligatorio (por defecto 'Otro'); 'Formulario' no está permitido. El agente asignado es el usuario que llama.",
         "annotations": {
           "readOnlyHint": false
         },
@@ -55,6 +82,42 @@
               "type": "string"
             },
             "company": {
+              "type": "string"
+            },
+            "canal": {
+              "default": "Otro",
+              "type": "string",
+              "enum": [
+                "WhatsApp",
+                "Correo electrónico",
+                "Redes sociales",
+                "Llamada telefónica",
+                "Otro"
+              ]
+            },
+            "estado": {
+              "type": "string",
+              "enum": [
+                "potencial",
+                "oficial"
+              ]
+            },
+            "medida_interes": {
+              "type": "string",
+              "enum": [
+                "frio",
+                "tibio",
+                "caliente"
+              ]
+            },
+            "pais": {
+              "type": "string"
+            },
+            "dni": {
+              "type": "string",
+              "pattern": "^[0-9-]+$"
+            },
+            "notas": {
               "type": "string"
             }
           },

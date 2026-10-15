@@ -14,32 +14,121 @@ export type Database = {
   }
   public: {
     Tables: {
+      client_billing: {
+        Row: {
+          actividad_economica: string | null
+          canton: string | null
+          cedula: string | null
+          client_id: string
+          direccion_fiscal: string | null
+          distrito: string | null
+          email: string | null
+          empresa: string | null
+          nombre_comercial: string | null
+          nombre_completo: string | null
+          provincia: string | null
+          razon_social: string | null
+          telefono: string | null
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          actividad_economica?: string | null
+          canton?: string | null
+          cedula?: string | null
+          client_id: string
+          direccion_fiscal?: string | null
+          distrito?: string | null
+          email?: string | null
+          empresa?: string | null
+          nombre_comercial?: string | null
+          nombre_completo?: string | null
+          provincia?: string | null
+          razon_social?: string | null
+          telefono?: string | null
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          actividad_economica?: string | null
+          canton?: string | null
+          cedula?: string | null
+          client_id?: string
+          direccion_fiscal?: string | null
+          distrito?: string | null
+          email?: string | null
+          empresa?: string | null
+          nombre_comercial?: string | null
+          nombre_completo?: string | null
+          provincia?: string | null
+          razon_social?: string | null
+          telefono?: string | null
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_billing_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: true
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clients: {
         Row: {
+          agente_id: string | null
+          canal: string
+          codigo: string
           company: string | null
           created_at: string
+          dni: string | null
           email: string | null
+          estado: string
           id: string
+          medida_interes: string | null
           name: string
+          notas: string | null
+          pais: string | null
           phone: string | null
+          tipo_facturacion: string
           user_id: string
         }
         Insert: {
+          agente_id?: string | null
+          canal?: string
+          codigo?: string
           company?: string | null
           created_at?: string
+          dni?: string | null
           email?: string | null
+          estado?: string
           id?: string
+          medida_interes?: string | null
           name: string
+          notas?: string | null
+          pais?: string | null
           phone?: string | null
+          tipo_facturacion?: string
           user_id: string
         }
         Update: {
+          agente_id?: string | null
+          canal?: string
+          codigo?: string
           company?: string | null
           created_at?: string
+          dni?: string | null
           email?: string | null
+          estado?: string
           id?: string
+          medida_interes?: string | null
           name?: string
+          notas?: string | null
+          pais?: string | null
           phone?: string | null
+          tipo_facturacion?: string
           user_id?: string
         }
         Relationships: []
@@ -123,6 +212,14 @@ export type Database = {
         Returns: boolean
       }
       is_active_user: { Args: { _user_id: string }; Returns: boolean }
+      list_active_agents: {
+        Args: never
+        Returns: {
+          email: string
+          id: string
+          nombre: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "agente"
