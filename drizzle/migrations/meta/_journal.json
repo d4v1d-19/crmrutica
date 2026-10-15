@@ -15,6 +15,13 @@
       "when": 1792105309960,
       "tag": "0001_roles_profiles_permissions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792105509560,
+      "tag": "0002_clients_module",
+      "breakpoints": true
     }
   ]
 }
