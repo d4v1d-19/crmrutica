@@ -11,7 +11,7 @@ export type QuoteSnapshot = {
   paquete?: string | null;
   variables?: { dias?: number; noches?: number; adultos?: number; mayores?: number; ninos?: number; nacionales?: number; extranjeros?: number };
 };
-export type Company = { nombre: string; correo: string | null; telefono: string | null; direccion: string | null; cedula_juridica: string | null; logo_url: string | null };
+export type Company = { nombre: string; correo: string | null; telefono: string | null; direccion: string | null; cedula_juridica: string | null; actividad_economica?: string | null; logo_url: string | null };
 
 const fecha = (d: string | Date) =>
   new Intl.DateTimeFormat("es-CR", { timeZone: "America/Costa_Rica", day: "2-digit", month: "2-digit", year: "numeric" }).format(
@@ -38,8 +38,13 @@ async function loadImage(url: string): Promise<{ data: string; w: number; h: num
 }
 
 export async function generarPdfCotizacion(opts: {
-  numero: number;
+  numero: number | string;
   cliente: string;
+  clienteLineas?: string[];
+  titulo?: string;
+  rangoLabel?: string;
+  nota?: string;
+  archivo?: string;
   creada: string;
   vence: string | null;
   moneda: string;
@@ -63,16 +68,17 @@ export async function generarPdfCotizacion(opts: {
       doc.addImage(img.data, W - M - w, y - 6, w, h);
     }
   }
-  doc.setFont("helvetica", "bold").setFontSize(26).text("Cotización", M, y + 20);
+  doc.setFont("helvetica", "bold").setFontSize(26).text(opts.titulo ?? "Cotización", M, y + 20);
   doc.setFont("helvetica", "normal").setFontSize(10);
   y += 46;
-  const empresaLines = [e.nombre, e.cedula_juridica && `Cédula jurídica: ${e.cedula_juridica}`, e.direccion, e.correo, e.telefono].filter(Boolean) as string[];
+  const empresaLines = [e.nombre, e.cedula_juridica && `Cédula jurídica: ${e.cedula_juridica}`, e.actividad_economica && `Actividad económica: ${e.actividad_economica}`, e.direccion, e.correo, e.telefono].filter(Boolean) as string[];
   doc.text(empresaLines, M, y);
   const info = [
     `Número: ${opts.numero}`,
     `Fecha: ${fecha(opts.creada)}`,
-    `Válida: ${fecha(opts.creada)} al ${opts.vence ? fecha(opts.vence) : "—"}`,
+    `${opts.rangoLabel ?? "Válida"}: ${fecha(opts.creada)} al ${opts.vence ? fecha(opts.vence) : "—"}`,
     `Cliente: ${opts.cliente}`,
+    ...(opts.clienteLineas ?? []),
   ];
   doc.text(info, W - M, y, { align: "right" });
   y += Math.max(empresaLines.length, info.length) * 13 + 16;
@@ -102,7 +108,7 @@ export async function generarPdfCotizacion(opts: {
     columnStyles: { 2: { halign: "right", cellWidth: 110 } },
   });
   const endY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY;
-  doc.setFontSize(8).setTextColor(110).text("Documento proforma. No es una factura.", M, endY + 24);
-  if (opts.descargar !== false) doc.save(`cotizacion-${opts.numero}.pdf`);
+  doc.setFontSize(8).setTextColor(110).text(opts.nota ?? "Documento proforma. No es una factura.", M, endY + 24);
+  if (opts.descargar !== false) doc.save(opts.archivo ?? `cotizacion-${opts.numero}.pdf`);
   return doc;
 }

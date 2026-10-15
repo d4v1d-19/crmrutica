@@ -465,6 +465,50 @@ export type Database = {
         }
         Relationships: []
       }
+      payments: {
+        Row: {
+          created_at: string
+          fecha: string
+          id: string
+          invoice_id: string
+          metodo: string
+          monto: number
+          nota: string | null
+          registrado_por: string | null
+          registrado_por_nombre: string | null
+        }
+        Insert: {
+          created_at?: string
+          fecha?: string
+          id?: string
+          invoice_id: string
+          metodo: string
+          monto: number
+          nota?: string | null
+          registrado_por?: string | null
+          registrado_por_nombre?: string | null
+        }
+        Update: {
+          created_at?: string
+          fecha?: string
+          id?: string
+          invoice_id?: string
+          metodo?: string
+          monto?: number
+          nota?: string | null
+          registrado_por?: string | null
+          registrado_por_nombre?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       percentages: {
         Row: {
           aplica_a: string[]
