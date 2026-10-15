@@ -1,0 +1,4 @@
+CREATE POLICY "CRM lee logo empresa" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'company-assets' AND public.is_active_user(auth.uid()));
+CREATE POLICY "Admin sube logo empresa" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'company-assets' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admin actualiza logo empresa" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'company-assets' AND public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admin borra logo empresa" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'company-assets' AND public.has_role(auth.uid(), 'admin'));
