@@ -13,7 +13,7 @@ export const Route = createFileRoute("/login")({
   }),
   head: () => ({
     meta: [
-      { title: "Iniciar sesión — Customer Connection Hub" },
+      { title: "Iniciar sesión — Rutica CRM" },
       { name: "robots", content: "noindex" },
     ],
   }),
