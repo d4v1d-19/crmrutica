@@ -64,6 +64,13 @@
       "when": 1792107154278,
       "tag": "0008_company_assets_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1792107266348,
+      "tag": "0009_dashboard_agents_fn",
+      "breakpoints": true
     }
   ]
 }

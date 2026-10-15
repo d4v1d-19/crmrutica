@@ -720,6 +720,16 @@ export type Database = {
       }
     }
     Functions: {
+      dashboard_agents: {
+        Args: never
+        Returns: {
+          activo: boolean
+          comision_porcentaje: number
+          email: string
+          id: string
+          nombre: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
