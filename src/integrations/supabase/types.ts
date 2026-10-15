@@ -267,6 +267,107 @@ export type Database = {
         }
         Relationships: []
       }
+      package_variables: {
+        Row: {
+          descripcion: string | null
+          id: string
+          monto: number
+          nombre: string
+          orden: number
+          package_id: string
+          unidad: string
+        }
+        Insert: {
+          descripcion?: string | null
+          id?: string
+          monto?: number
+          nombre: string
+          orden?: number
+          package_id: string
+          unidad?: string
+        }
+        Update: {
+          descripcion?: string | null
+          id?: string
+          monto?: number
+          nombre?: string
+          orden?: number
+          package_id?: string
+          unidad?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_variables_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      packages: {
+        Row: {
+          cenas_por_persona: number
+          created_at: string
+          desayunos_por_persona: number
+          dias: number
+          id: string
+          incluye_cena: boolean
+          incluye_desayuno: boolean
+          incluye_hospedaje: boolean
+          meriendas_por_persona: number
+          moneda: string
+          noches: number
+          precio_4x4: number
+          precio_barco: number
+          titulo: string
+          transporte_4x4: boolean
+          transporte_barco: boolean
+          unidad_4x4: string
+          unidad_barco: string
+        }
+        Insert: {
+          cenas_por_persona?: number
+          created_at?: string
+          desayunos_por_persona?: number
+          dias?: number
+          id?: string
+          incluye_cena?: boolean
+          incluye_desayuno?: boolean
+          incluye_hospedaje?: boolean
+          meriendas_por_persona?: number
+          moneda?: string
+          noches?: number
+          precio_4x4?: number
+          precio_barco?: number
+          titulo: string
+          transporte_4x4?: boolean
+          transporte_barco?: boolean
+          unidad_4x4?: string
+          unidad_barco?: string
+        }
+        Update: {
+          cenas_por_persona?: number
+          created_at?: string
+          desayunos_por_persona?: number
+          dias?: number
+          id?: string
+          incluye_cena?: boolean
+          incluye_desayuno?: boolean
+          incluye_hospedaje?: boolean
+          meriendas_por_persona?: number
+          moneda?: string
+          noches?: number
+          precio_4x4?: number
+          precio_barco?: number
+          titulo?: string
+          transporte_4x4?: boolean
+          transporte_barco?: boolean
+          unidad_4x4?: string
+          unidad_barco?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           activo: boolean
