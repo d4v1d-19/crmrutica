@@ -152,7 +152,7 @@ function ClientesPage() {
                     {c.estado === "potencial" ? (
                       <DropdownMenuItem onSelect={() => convertir(c)}>Convertir en cliente oficial</DropdownMenuItem>
                     ) : (
-                      <DropdownMenuItem onSelect={() => navigate({ to: "/facturas" })}>Ver facturas</DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => navigate({ to: "/facturas", search: { cliente: c.id } })}>Ver facturas</DropdownMenuItem>
                     )}
                     <DropdownMenuItem
                       disabled={!data?.isAdmin}
