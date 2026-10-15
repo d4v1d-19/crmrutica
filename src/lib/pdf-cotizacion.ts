@@ -94,7 +94,7 @@ export async function generarPdfCotizacion(opts: {
 
   autoTable(doc, {
     startY: y,
-    head: [["Rubro", "Detalle", "Monto"]],
+    head: [["Rubro", "Detalle", { content: "Monto", styles: { halign: "right" } }]],
     body,
     margin: { left: M, right: M },
     styles: { fontSize: 10, cellPadding: 6 },
