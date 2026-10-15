@@ -8,6 +8,13 @@
       "when": 1791687780716,
       "tag": "0000_create_clients_table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792105309960,
+      "tag": "0001_roles_profiles_permissions",
+      "breakpoints": true
     }
   ]
 }

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
   }),
   head: () => ({
     meta: [
-      { title: "Autorizar conexión — Customer Connection Hub" },
+      { title: "Autorizar conexión — Rutica CRM" },
       { name: "robots", content: "noindex" },
     ],
   }),

@@ -1,13 +1,16 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Briefcase, CheckSquare, Settings } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, Calculator, FileText, Receipt, Package, Settings } from "lucide-react";
 import type { ReactNode } from "react";
 
 const navItems = [
-  { to: "/", label: "Panel", icon: LayoutDashboard },
+  { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/clientes", label: "Clientes", icon: Users },
-  { to: "/oportunidades", label: "Oportunidades", icon: Briefcase },
-  { to: "/tareas", label: "Tareas", icon: CheckSquare },
-  { to: "/configuracion", label: "Configuración", icon: Settings },
+  { to: "/formularios", label: "Formularios", icon: ClipboardList },
+  { to: "/calculadora", label: "Calculadora de precios", icon: Calculator },
+  { to: "/cotizaciones", label: "Cotizaciones", icon: FileText },
+  { to: "/facturas", label: "Facturas", icon: Receipt },
+  { to: "/paquetes", label: "Catálogo de paquetes", icon: Package },
+  { to: "/configuracion", label: "Configuraciones", icon: Settings },
 ] as const;
 
 export function CrmLayout({ children }: { children?: ReactNode }) {
@@ -17,7 +20,7 @@ export function CrmLayout({ children }: { children?: ReactNode }) {
     <div className="flex min-h-screen bg-background">
       <aside className="flex w-60 flex-col border-r border-border bg-card">
         <div className="flex h-14 items-center border-b border-border px-5">
-          <span className="text-lg font-semibold tracking-tight text-foreground">Mi CRM</span>
+          <span className="text-lg font-semibold tracking-tight text-foreground">Rutica CRM</span>
         </div>
         <nav className="flex-1 space-y-1 p-3">
           {navItems.map(({ to, label, icon: Icon }) => {
