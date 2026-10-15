@@ -65,7 +65,7 @@ const TARIFA_CAMPOS = [
 ] as const;
 
 const NONE = "__none";
-const uid = () => crypto.randomUUID();
+const uid = (): string => crypto.randomUUID();
 const plus15 = () => {
   const d = new Date(Date.now() + 15 * 86400000);
   return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Costa_Rica" }).format(d);
