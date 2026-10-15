@@ -90,6 +90,11 @@ export function ClientFormDialog({
   const canton = form.watch("billing.canton");
   const listaPaises = useMemo(() => paises(), []);
 
+  function onInvalid() {
+    toast.error("Revisa los campos marcados en rojo");
+    setTimeout(() => document.querySelector<HTMLElement>('[role="dialog"] [aria-invalid="true"]')?.scrollIntoView({ block: "center", behavior: "smooth" }), 0);
+  }
+
   async function onSubmit(v: ClientFormValues) {
     const row = {
       name: v.name.trim(),
@@ -151,7 +156,7 @@ export function ClientFormDialog({
           <DialogTitle>{client ? `Editar cliente ${client.codigo}` : "Agregar cliente"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="space-y-6">
             <div className="grid gap-4 sm:grid-cols-2">
               {text("name", "Nombre *")}
               {text("email", "Correo electrónico", "email")}

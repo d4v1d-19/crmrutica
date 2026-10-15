@@ -15,5 +15,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [mcpPlugin()],
+    // Pre-bundle heavy libs so Vite never re-optimizes mid-session (that reload left every route blank).
+    optimizeDeps: { include: ["jspdf", "jspdf-autotable", "recharts"] },
   },
 });
