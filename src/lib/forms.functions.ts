@@ -29,7 +29,7 @@ function publicClient() {
 const slugSchema = z.string().trim().min(1).max(80).regex(/^[a-z0-9-]+$/);
 
 export const getPublicForm = createServerFn({ method: "GET" })
-  .inputValidator((d: { slug: string }) => ({ slug: slugSchema.parse(d.slug) }))
+  .validator((d: { slug: string }) => ({ slug: slugSchema.parse(d.slug) }))
   .handler(async ({ data }) => {
     const sb = publicClient();
     const { data: form } = await sb
@@ -74,7 +74,7 @@ async function sendEmail(to: string, subject: string, text: string) {
 }
 
 export const submitForm = createServerFn({ method: "POST" })
-  .inputValidator((d: { slug: string; data: Record<string, unknown> }) =>
+  .validator((d: { slug: string; data: Record<string, unknown> }) =>
     z.object({ slug: slugSchema, data: z.record(z.string(), z.unknown()) }).parse(d),
   )
   .handler(async ({ data: input }) => {
