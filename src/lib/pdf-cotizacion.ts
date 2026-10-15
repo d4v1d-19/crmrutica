@@ -45,6 +45,7 @@ export async function generarPdfCotizacion(opts: {
   moneda: string;
   snapshot: QuoteSnapshot;
   empresa: Company;
+  descargar?: boolean;
 }) {
   const { jsPDF } = await import("jspdf");
   const { default: autoTable } = await import("jspdf-autotable");
@@ -102,5 +103,6 @@ export async function generarPdfCotizacion(opts: {
   });
   const endY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY;
   doc.setFontSize(8).setTextColor(110).text("Documento proforma. No es una factura.", M, endY + 24);
-  doc.save(`cotizacion-${opts.numero}.pdf`);
+  if (opts.descargar !== false) doc.save(`cotizacion-${opts.numero}.pdf`);
+  return doc;
 }
