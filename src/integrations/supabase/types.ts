@@ -133,6 +133,140 @@ export type Database = {
         }
         Relationships: []
       }
+      form_fields: {
+        Row: {
+          etiqueta: string
+          form_id: string
+          id: string
+          mapea_a_campo_cliente: string | null
+          obligatorio: boolean
+          opciones: Json | null
+          orden: number
+          regla_condicional: Json | null
+          tipo: string
+          variable: string
+        }
+        Insert: {
+          etiqueta: string
+          form_id: string
+          id?: string
+          mapea_a_campo_cliente?: string | null
+          obligatorio?: boolean
+          opciones?: Json | null
+          orden?: number
+          regla_condicional?: Json | null
+          tipo: string
+          variable: string
+        }
+        Update: {
+          etiqueta?: string
+          form_id?: string
+          id?: string
+          mapea_a_campo_cliente?: string | null
+          obligatorio?: boolean
+          opciones?: Json | null
+          orden?: number
+          regla_condicional?: Json | null
+          tipo?: string
+          variable?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_fields_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      form_submissions: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          data: Json
+          email_error: string | null
+          email_estado: string
+          form_id: string
+          id: string
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          data?: Json
+          email_error?: string | null
+          email_estado?: string
+          form_id: string
+          id?: string
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          data?: Json
+          email_error?: string | null
+          email_estado?: string
+          form_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_submissions_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "form_submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      forms: {
+        Row: {
+          activo: boolean
+          crea_cliente: boolean
+          created_at: string
+          created_by: string | null
+          descripcion: string | null
+          email_notificacion: string | null
+          id: string
+          plantilla_correo: string | null
+          slug: string
+          titulo: string
+          validaciones: Json
+        }
+        Insert: {
+          activo?: boolean
+          crea_cliente?: boolean
+          created_at?: string
+          created_by?: string | null
+          descripcion?: string | null
+          email_notificacion?: string | null
+          id?: string
+          plantilla_correo?: string | null
+          slug: string
+          titulo: string
+          validaciones?: Json
+        }
+        Update: {
+          activo?: boolean
+          crea_cliente?: boolean
+          created_at?: string
+          created_by?: string | null
+          descripcion?: string | null
+          email_notificacion?: string | null
+          id?: string
+          plantilla_correo?: string | null
+          slug?: string
+          titulo?: string
+          validaciones?: Json
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           activo: boolean
