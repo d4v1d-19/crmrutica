@@ -62,7 +62,13 @@ export async function generarPdfCotizacion(opts: {
 
   let y = M;
   if (e.logo_url) {
-    const img = await loadImage(e.logo_url);
+    let url = e.logo_url;
+    if (!/^https?:|^data:/.test(url)) {
+      const { supabase } = await import("@/integrations/supabase/client");
+      const { data } = await supabase.storage.from("company-assets").createSignedUrl(url, 120);
+      url = data?.signedUrl ?? "";
+    }
+    const img = url ? await loadImage(url) : null;
     if (img) {
       const h = 50, w = Math.min(160, (img.w / img.h) * h);
       doc.addImage(img.data, W - M - w, y - 6, w, h);
