@@ -19,11 +19,11 @@ export function SearchSelect({
   placeholder = "Seleccionar",
   disabled,
 }: {
-  value?: string;
+  value?: string | undefined;
   onChange: (v: string) => void;
   options: string[];
-  placeholder?: string;
-  disabled?: boolean;
+  placeholder?: string | undefined;
+  disabled?: boolean | undefined;
 }) {
   const [open, setOpen] = useState(false);
   return (

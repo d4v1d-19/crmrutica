@@ -100,7 +100,7 @@ function ClientesPage() {
 
   async function convertir(c: Client) {
     const { error } = await supabase.from("clients").update({ estado: "oficial" }).eq("id", c.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(`${c.name} ahora es cliente oficial`);
     refresh();
   }
@@ -108,7 +108,7 @@ function ClientesPage() {
     if (!toDelete) return;
     const { error, count } = await supabase.from("clients").delete({ count: "exact" }).eq("id", toDelete.id);
     setToDelete(null);
-    if (error || !count) return toast.error(error?.message ?? "Solo un administrador puede eliminar clientes");
+    if (error || !count) { toast.error(error?.message ?? "Solo un administrador puede eliminar clientes"); return; }
     toast.success("Cliente eliminado");
     refresh();
   }

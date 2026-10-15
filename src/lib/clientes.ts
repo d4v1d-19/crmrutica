@@ -1,3 +1,4 @@
+import type { TablesInsert } from "@/integrations/supabase/types";
 import { z } from "zod";
 
 export const CANALES = [
@@ -123,7 +124,7 @@ export type ClientFormValues = z.infer<typeof clientFormSchema>;
 export const nullIfEmpty = (s?: string | null) => (s && s.trim() ? s.trim() : null);
 
 /** Builds the client_billing row for the chosen invoice type. */
-export function billingRow(clientId: string, v: ClientFormValues) {
+export function billingRow(clientId: string, v: ClientFormValues): TablesInsert<"client_billing"> {
   const b = v.billing;
   if (v.tipo_facturacion === "electronica") {
     return {

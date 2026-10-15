@@ -107,21 +107,21 @@ export function ClientFormDialog({
     let id = client?.id;
     if (client) {
       const { error } = await supabase.from("clients").update(row).eq("id", client.id);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     } else {
       const { data, error } = await supabase
         .from("clients")
         .insert({ ...row, user_id: me })
         .select("id")
         .single();
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       id = data.id;
     }
     if (v.tipo_facturacion === "no_necesita") {
       await supabase.from("client_billing").delete().eq("client_id", id!);
     } else {
       const { error } = await supabase.from("client_billing").upsert(billingRow(id!, v));
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
     }
     toast.success(client ? "Cliente actualizado" : "Cliente creado");
     onOpenChange(false);
