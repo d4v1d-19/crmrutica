@@ -7,7 +7,7 @@ const fmt = (d: Date) => `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.
 
 /** Rango inclusivo (YYYY-MM-DD) del periodo, `offset` = 0 actual, -1 anterior… `hoy` en zona Costa Rica. */
 export function rangoPeriodo(p: Periodo, offset: number, hoy: string) {
-  const [y, m, d] = hoy.split("-").map(Number);
+  const [y = 1970, m = 1, d = 1] = hoy.split("-").map(Number);
   let a: Date, b: Date, label: string;
   if (p === "anio") {
     a = new Date(Date.UTC(y + offset, 0, 1)); b = new Date(Date.UTC(y + offset, 11, 31));
