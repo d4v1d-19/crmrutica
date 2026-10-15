@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { slugify } from "@/lib/forms";
+import { copyLink } from "@/lib/forms-ui";
 
 export const Route = createFileRoute("/_authenticated/formularios/")({
   head: () => ({
@@ -25,14 +26,6 @@ export const Route = createFileRoute("/_authenticated/formularios/")({
   }),
   component: FormulariosPage,
 });
-
-export function publicLink(slug: string) {
-  return `${window.location.origin}/f/${slug}`;
-}
-export async function copyLink(slug: string) {
-  await navigator.clipboard.writeText(publicLink(slug));
-  toast.success("Link copiado");
-}
 
 function FormulariosPage() {
   const qc = useQueryClient();
