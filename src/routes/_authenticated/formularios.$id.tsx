@@ -442,7 +442,7 @@ function FieldEditor({ field: f, all, onChange }: { field: EditField; all: EditF
           </Select>
           {f.regla_condicional?.campo && (
             <Select
-              value={f.regla_condicional.valor || undefined}
+              value={f.regla_condicional.valor}
               onValueChange={(v) => onChange({ regla_condicional: { campo: f.regla_condicional!.campo, valor: v } })}
             >
               <SelectTrigger><SelectValue placeholder="= valor" /></SelectTrigger>

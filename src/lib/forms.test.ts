@@ -16,11 +16,11 @@ describe("form rules", () => {
   });
   it("dni only numbers and dashes", () => {
     const dni = [f({ variable: "dni", opciones: { patron: "^[0-9-]*$", ayuda: "Solo números y guiones" } })];
-    expect(validateSubmission(dni, { dni: "12a" }).dni).toBe("Solo números y guiones");
-    expect(validateSubmission(dni, { dni: "1-234" }).dni).toBeUndefined();
+    expect(validateSubmission(dni, { dni: "12a" })["dni"]).toBe("Solo números y guiones");
+    expect(validateSubmission(dni, { dni: "1-234" })["dni"]).toBeUndefined();
   });
   it("stepper must be integer", () => {
-    expect(validateSubmission(fields, { ninos: "si", cantidad_ninos: 1.5 }).cantidad_ninos).toBeDefined();
+    expect(validateSubmission(fields, { ninos: "si", cantidad_ninos: 1.5 })["cantidad_ninos"]).toBeDefined();
   });
   it("asks confirmation when seniors + kids = total", () => {
     const all = [

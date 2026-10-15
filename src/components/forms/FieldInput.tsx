@@ -113,7 +113,7 @@ export function FieldInput({
       return (
         <div className="space-y-2">
           {label}
-          <Select value={s || undefined} onValueChange={onChange}>
+          <Select value={s} onValueChange={onChange}>
             <SelectTrigger id={id}><SelectValue placeholder="Seleccionar" /></SelectTrigger>
             <SelectContent>
               {optionItems(field).map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
