@@ -1,6 +1,7 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Users, ClipboardList, Calculator, FileText, Receipt, Package, Settings } from "lucide-react";
 import type { ReactNode } from "react";
+import { useMyRole } from "@/hooks/use-my-role";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -15,6 +16,7 @@ const navItems = [
 
 export function CrmLayout({ children }: { children?: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { data: me } = useMyRole();
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -23,7 +25,7 @@ export function CrmLayout({ children }: { children?: ReactNode }) {
           <span className="text-lg font-semibold tracking-tight text-foreground">Rutica CRM</span>
         </div>
         <nav className="flex-1 space-y-1 p-3">
-          {navItems.map(({ to, label, icon: Icon }) => {
+          {navItems.filter((n) => n.to !== "/configuracion" || me?.isAdmin).map(({ to, label, icon: Icon }) => {
             const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
             return (
               <Link
