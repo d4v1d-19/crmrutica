@@ -130,7 +130,7 @@ function DashboardPage() {
 type P = { data: Data; desde: string; hasta: string; hoy: string; myId: string };
 const enRango = (dia: string, p: { desde: string; hasta: string }) => dia >= p.desde && dia <= p.hasta;
 
-function Kpi({ label, value, sub, sub2, swatch }: { label: string; value: string | number; sub?: string; sub2?: string[]; swatch?: string }) {
+function Kpi({ label, value, sub, sub2, swatch }: { label: string; value: string | number; sub?: string; sub2?: string[] | undefined; swatch?: string }) {
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
