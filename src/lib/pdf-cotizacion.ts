@@ -50,6 +50,7 @@ export async function generarPdfCotizacion(opts: {
   moneda: string;
   snapshot: QuoteSnapshot;
   empresa: Company;
+  pagos?: { fecha: string; monto: number; metodo: string }[];
   descargar?: boolean;
 }) {
   const { jsPDF } = await import("jspdf");
