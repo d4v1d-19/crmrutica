@@ -61,9 +61,9 @@ export function calcular(t: Tarifas, v: CalcVars, porcentajes: Porcentaje[]) {
     { key: "entradas_nacionales", rubro: "entradas_nacionales", label: "Entradas nacionales", detalle: `${v.nacionales} × ${v.dias} día(s) × ${t.entrada_nacional}`, monto: v.nacionales * v.dias * t.entrada_nacional },
     { key: "entradas_extranjeros", rubro: "entradas_extranjeros", label: "Entradas extranjeros", detalle: `${v.extranjeros} × ${v.dias} día(s) × ${t.entrada_extranjero}`, monto: v.extranjeros * v.dias * t.entrada_extranjero },
     { key: "hospedaje", rubro: "hospedaje", label: "Hospedaje", detalle: v.hospedaje ? `${p} × ${v.noches} noche(s) × ${t.hospedaje}` : "No incluido", monto: v.hospedaje ? p * v.noches * t.hospedaje : 0 },
-    { key: "desayunos", rubro: "desayunos", label: "Desayunos", detalle: `${nDes} × ${t.desayuno} × ${factor}`, monto: nDes * t.desayuno * factor },
-    { key: "meriendas", rubro: "meriendas", label: "Meriendas/almuerzos", detalle: `${nMer} × ${t.merienda} × ${factor}`, monto: nMer * t.merienda * factor },
-    { key: "cenas", rubro: "cenas", label: "Cenas", detalle: `${nCen} × ${t.cena} × ${factor}`, monto: nCen * t.cena * factor },
+    { key: "desayunos", rubro: "desayunos", label: "Desayunos", detalle: `${nDes} × ${t.desayuno} × ${factor} personas equiv. (${v.adultos + v.mayores} adultos + ${v.ninos} niños al 50%)`, monto: nDes * t.desayuno * factor },
+    { key: "meriendas", rubro: "meriendas", label: "Meriendas/almuerzos", detalle: `${nMer} × ${t.merienda} × ${factor} personas equiv. (${v.adultos + v.mayores} adultos + ${v.ninos} niños al 50%)`, monto: nMer * t.merienda * factor },
+    { key: "cenas", rubro: "cenas", label: "Cenas", detalle: `${nCen} × ${t.cena} × ${factor} personas equiv. (${v.adultos + v.mayores} adultos + ${v.ninos} niños al 50%)`, monto: nCen * t.cena * factor },
   ];
   if (v.t4x4) lineas.push({ key: "transporte_4x4", rubro: "transporte_4x4", label: "Transporte 4x4", detalle: `${p} × ${v.precio4x4}`, monto: p * v.precio4x4 });
   if (v.barco) lineas.push({ key: "transporte_barco", rubro: "transporte_barco", label: "Transporte barco", detalle: `${p} × ${v.precioBarco}`, monto: p * v.precioBarco });
