@@ -26,18 +26,19 @@ export function rangoPeriodo(p: Periodo, offset: number, hoy: string) {
 }
 
 export type Montos = Record<string, number>;
-export type EstadoResumen = Record<EstadoFactura, { cantidad: number; montos: Montos }>;
+export type EstadoResumen = Record<EstadoFactura, { cantidad: number; montos: Montos; cobrado: Montos }>;
 const add = (m: Montos, moneda: string, n: number) => { m[moneda] = Math.round(((m[moneda] ?? 0) + n) * 100) / 100; };
 
 export type InvoiceLite = { id: string; total: number; moneda: string; fecha_vencimiento: string | null; agente: string | null; dia: string; pagos: { monto: number; fecha: string }[] };
 
 export function resumenFacturas(invs: InvoiceLite[], hoy: string): EstadoResumen {
-  const r: EstadoResumen = { pendiente: { cantidad: 0, montos: {} }, pagada_parcialmente: { cantidad: 0, montos: {} }, pagada: { cantidad: 0, montos: {} }, expirada: { cantidad: 0, montos: {} } };
+  const r: EstadoResumen = { pendiente: { cantidad: 0, montos: {}, cobrado: {} }, pagada_parcialmente: { cantidad: 0, montos: {}, cobrado: {} }, pagada: { cantidad: 0, montos: {}, cobrado: {} }, expirada: { cantidad: 0, montos: {}, cobrado: {} } };
   for (const i of invs) {
     const pagado = i.pagos.reduce((s, p) => s + Number(p.monto), 0);
     const e = estadoFactura(i.total, pagado, i.fecha_vencimiento, hoy);
     r[e].cantidad++;
     add(r[e].montos, i.moneda, Number(i.total));
+    add(r[e].cobrado, i.moneda, pagado);
   }
   return r;
 }

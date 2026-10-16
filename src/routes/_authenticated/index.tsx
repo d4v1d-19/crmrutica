@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PageHeader, EmptyState } from "@/components/CrmLayout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -131,7 +130,7 @@ function DashboardPage() {
 type P = { data: Data; desde: string; hasta: string; hoy: string; myId: string };
 const enRango = (dia: string, p: { desde: string; hasta: string }) => dia >= p.desde && dia <= p.hasta;
 
-function Kpi({ label, value, sub, swatch }: { label: string; value: string | number; sub?: string; swatch?: string }) {
+function Kpi({ label, value, sub, sub2, swatch }: { label: string; value: string | number; sub?: string; sub2?: string[] | undefined; swatch?: string }) {
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
@@ -139,26 +138,21 @@ function Kpi({ label, value, sub, swatch }: { label: string; value: string | num
       </p>
       <p className="mt-1 text-2xl font-semibold text-foreground">{value}</p>
       {sub && <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>}
+      {sub2?.map((t) => <p key={t} className="text-xs text-muted-foreground">{t}</p>)}
     </div>
   );
 }
 
 function Stacked({ title, parts }: { title: string; parts: { label: string; value: number; color: string }[] }) {
-  const row = Object.fromEntries(parts.map((p) => [p.label, p.value]));
   const total = parts.reduce((s, p) => s + p.value, 0);
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <p className="mb-2 text-sm font-semibold text-foreground">{title}</p>
       {total === 0 ? <p className="py-3 text-sm text-muted-foreground">Sin datos en el periodo.</p> : (
-        <div className="h-14">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={[{ name: title, ...row }]} layout="vertical" margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
-              <XAxis type="number" hide domain={[0, total]} />
-              <YAxis type="category" dataKey="name" hide />
-              <Tooltip cursor={false} />
-              {parts.map((p, i) => <Bar key={p.label} dataKey={p.label} stackId="s" fill={p.color} stroke="var(--border)" radius={i === 0 ? [4, 0, 0, 4] : i === parts.length - 1 ? [0, 4, 4, 0] : 0} />)}
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="flex h-8 w-full overflow-hidden rounded-md border border-border">
+          {parts.filter((p) => p.value > 0).map((p) => (
+            <div key={p.label} title={`${p.label}: ${p.value}`} style={{ width: `${(p.value / total) * 100}%`, backgroundColor: p.color }} className="h-full border-r border-border last:border-r-0" />
+          ))}
         </div>
       )}
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
@@ -168,12 +162,14 @@ function Stacked({ title, parts }: { title: string; parts: { label: string; valu
   );
 }
 
+const saldo = (t: Montos, c: Montos): Montos => Object.fromEntries(Object.entries(t).map(([k, v]) => [k, Math.round((v - (c[k] ?? 0)) * 100) / 100]));
+
 function FacturasBlock({ r, extra }: { r: EstadoResumen; extra?: React.ReactNode }) {
   return (
     <section className="space-y-3">
       <h2 className="text-sm font-semibold text-foreground">Facturas</h2>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {ESTADOS_F.map((e) => <Kpi key={e.k} label={e.label} value={r[e.k].cantidad} sub={montos(r[e.k].montos)} swatch={e.color} />)}
+        {ESTADOS_F.map((e) => <Kpi key={e.k} label={e.label} value={r[e.k].cantidad} sub={`Total: ${montos(r[e.k].montos)}`} sub2={e.k === "pagada_parcialmente" && r[e.k].cantidad ? [`Cobrado: ${montos(r[e.k].cobrado)}`, `Saldo: ${montos(saldo(r[e.k].montos, r[e.k].cobrado))}`] : undefined} swatch={e.color} />)}
       </div>
       {extra}
       <Stacked title="Estado de facturas" parts={ESTADOS_F.map((e) => ({ label: e.label, value: r[e.k].cantidad, color: e.color }))} />
@@ -282,7 +278,7 @@ function General({ data, desde, hasta, hoy, show }: P & { show: { potenciales: b
               <TableBody>
                 {agentes.map((x) => (
                   <TableRow key={x.a.id}>
-                    <TableCell className="font-medium">{x.a.nombre ?? x.a.email}{!x.a.activo && <span className="ml-1 text-xs text-muted-foreground">(inactivo)</span>}</TableCell>
+                    <TableCell className="font-medium">{x.a.nombre || x.a.email}{!x.a.activo && <span className="ml-1 text-xs text-muted-foreground">(inactivo)</span>}</TableCell>
                     <TableCell className="text-right">{x.res.pagada.cantidad}</TableCell>
                     <TableCell className="text-right">{x.res.pagada_parcialmente.cantidad}</TableCell>
                     <TableCell className="text-right">{x.res.pendiente.cantidad}</TableCell>

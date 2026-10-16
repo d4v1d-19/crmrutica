@@ -13,7 +13,17 @@ describe("dashboard", () => {
   });
   it("cuenta estados con monto", () => {
     const r = resumenFacturas([inv({ pagos: [{ monto: 100, fecha: "2026-10-02" }] }), inv({ total: 50, pagos: [{ monto: 10, fecha: "2026-10-02" }] })], "2026-10-15");
-    expect(r.pagada).toEqual({ cantidad: 1, montos: { USD: 100 } });
+    expect(r.pagada).toEqual({ cantidad: 1, montos: { USD: 100 }, cobrado: { USD: 100 } });
     expect(r.pagada_parcialmente.cantidad).toBe(1);
+  });
+});
+
+import { describe as d2, it as i2, expect as e2 } from "vitest";
+import { resumenFacturas as rf } from "./dashboard";
+d2("parcial", () => {
+  i2("guarda total y cobrado de pagadas parcialmente", () => {
+    const r = rf([{ id: "x", total: 775.48, moneda: "USD", fecha_vencimiento: "2099-01-01", agente: null, dia: "2026-10-01", pagos: [{ monto: 300, fecha: "2026-10-02" }] }], "2026-10-15");
+    e2(r.pagada_parcialmente.montos["USD"]).toBe(775.48);
+    e2(r.pagada_parcialmente.cobrado["USD"]).toBe(300);
   });
 });
