@@ -50,14 +50,14 @@ const fechaISO = (d: string) => formatFecha(`${d}T12:00:00-06:00`);
 const metodoLabel = (m: string) => METODOS_PAGO.find((x) => x.value === m)?.label ?? m;
 
 type Pago = { id: string; monto: number; fecha: string; metodo: string; nota: string | null; registrado_por_nombre: string | null; created_at: string };
-type Billing = { nombre_completo: string | null; razon_social: string | null; empresa: string | null; cedula: string | null; telefono: string | null; email: string | null };
-type Cli = { id: string; codigo: string; name: string; client_billing: Billing | Billing[] | null } | null;
+type Billing = { nombre_completo: string | null; razon_social: string | null; empresa: string | null; cedula: string | null; telefono: string | null; email: string | null; direccion_fiscal: string | null };
+type Cli = { id: string; codigo: string; name: string; phone: string | null; email: string | null; client_billing: Billing | Billing[] | null } | null;
 
 async function load() {
   const [inv, company] = await Promise.all([
     supabase
       .from("invoices")
-      .select("*, clients(id, codigo, name, client_billing(*)), payments(id, monto, fecha, metodo, nota, registrado_por_nombre, created_at)")
+      .select("*, clients(id, codigo, name, phone, email, client_billing(*)), payments(id, monto, fecha, metodo, nota, registrado_por_nombre, created_at)")
       .order("created_at", { ascending: false }),
     supabase.from("company_settings").select("*").eq("id", 1).maybeSingle(),
   ]);
