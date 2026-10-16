@@ -115,8 +115,8 @@ function FacturasPage() {
     const raw = i.cliente?.client_billing;
     const b = (Array.isArray(raw) ? raw[0] : raw) ?? null;
     const lineas = b
-      ? [b.nombre_completo ?? b.razon_social, b.empresa && `Empresa: ${b.empresa}`, b.cedula && `Cédula: ${b.cedula}`, b.telefono && `Tel: ${b.telefono}`, b.email].filter(Boolean) as string[]
-      : [];
+      ? ([b.nombre_completo ?? b.razon_social, b.empresa && `Empresa: ${b.empresa}`, b.cedula && `Cédula: ${b.cedula}`, b.direccion_fiscal && `Dirección: ${b.direccion_fiscal}`, b.telefono && `Tel: ${b.telefono}`, b.email].filter(Boolean) as string[])
+      : ([i.cliente?.name, i.cliente?.phone && `Tel: ${i.cliente.phone}`, i.cliente?.email].filter(Boolean) as string[]);
     try {
       await generarPdfCotizacion({
         titulo: "Factura",
@@ -130,6 +130,7 @@ function FacturasPage() {
         snapshot: (i.snapshot ?? {}) as QuoteSnapshot,
         empresa: data?.company ?? { nombre: "Rutica", correo: null, telefono: null, direccion: null, cedula_juridica: null, logo_url: null },
         nota: "Factura proforma.",
+        pagos: i.pagos.map((p) => ({ fecha: p.fecha, monto: Number(p.monto), metodo: p.metodo })),
         archivo: `factura-${i.numero}.pdf`,
       });
     } catch {
