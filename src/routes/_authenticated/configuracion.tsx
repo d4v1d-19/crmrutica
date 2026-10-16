@@ -203,7 +203,7 @@ function UsuariosTab({ myId }: { myId: string | null }) {
     refresh();
   }
 
-  async function actualizar(u: U, patch: { comision_porcentaje?: number; activo?: boolean }) {
+  async function actualizar(u: U, patch: { comision_porcentaje?: number; activo?: boolean; nombre?: string | null }) {
     if (u.id === myId && patch.activo === false) { toast.error("No puedes desactivar tu propio usuario"); return; }
     const { error } = await supabase.from("profiles").update(patch).eq("id", u.id);
     if (error) { toast.error(error.message); return; }
@@ -240,7 +240,13 @@ function UsuariosTab({ myId }: { myId: string | null }) {
             <TableBody>
               {(data ?? []).map((u) => (
                 <TableRow key={u.id}>
-                  <TableCell className="font-medium">{u.nombre ?? "—"}{u.id === myId && <span className="ml-1 text-xs text-muted-foreground">(tú)</span>}</TableCell>
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-1">
+                      <Input placeholder={u.email ?? "Nombre"} defaultValue={u.nombre ?? ""} key={`${u.id}-n-${u.nombre}`} aria-label="Nombre"
+                        onBlur={(e) => { const n = e.target.value.trim() || null; if (n !== (u.nombre ?? null)) void actualizar(u, { nombre: n }); }} />
+                      {u.id === myId && <span className="text-xs text-muted-foreground">(tú)</span>}
+                    </div>
+                  </TableCell>
                   <TableCell>{u.email}</TableCell>
                   <TableCell>
                     <Select value={u.role} onValueChange={(v) => cambiarRol(u, v as "admin" | "agente")}>
@@ -301,7 +307,7 @@ function PermisosDialog({ user, onClose, onSaved }: { user: U | null; onClose: (
     <Dialog open={!!user} onOpenChange={(o) => !o && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Permisos de {user?.nombre ?? user?.email}</DialogTitle>
+          <DialogTitle>Permisos de {user?.nombre || user?.email}</DialogTitle>
           <DialogDescription>{isAdmin ? "Los administradores tienen todos los permisos." : "Selecciona los bloques que este usuario puede ver."}</DialogDescription>
         </DialogHeader>
         <div className="space-y-5">
