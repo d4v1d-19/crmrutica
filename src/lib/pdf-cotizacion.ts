@@ -114,7 +114,28 @@ export async function generarPdfCotizacion(opts: {
     headStyles: { fillColor: [40, 70, 60] },
     columnStyles: { 2: { halign: "right", cellWidth: 110 } },
   });
-  const endY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY;
+  let endY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY;
+
+  if (opts.pagos) {
+    const pagado = opts.pagos.reduce((a, p) => a + p.monto, 0);
+    const saldo = Math.max(0, (s.total ?? 0) - pagado);
+    const abonos: (string | { content: string; styles: object })[][] = opts.pagos.map((p) => [fecha(p.fecha), p.metodo, fmt(p.monto)]);
+    abonos.push(
+      [{ content: "Pagado", styles: { fontStyle: "bold" } }, "", { content: fmt(pagado), styles: { fontStyle: "bold" } }],
+      [{ content: "Saldo pendiente", styles: { fontStyle: "bold" } }, "", { content: fmt(saldo), styles: { fontStyle: "bold" } }],
+    );
+    autoTable(doc, {
+      startY: endY + 14,
+      head: [["Abonos", "Método", { content: "Monto", styles: { halign: "right" } }]],
+      body: abonos,
+      margin: { left: M, right: M },
+      styles: { fontSize: 10, cellPadding: 6 },
+      headStyles: { fillColor: [40, 70, 60] },
+      columnStyles: { 2: { halign: "right", cellWidth: 110 } },
+    });
+    endY = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY;
+  }
+
   doc.setFontSize(8).setTextColor(110).text(opts.nota ?? "Documento proforma. No es una factura.", M, endY + 24);
   if (opts.descargar !== false) doc.save(opts.archivo ?? `cotizacion-${opts.numero}.pdf`);
   return doc;
